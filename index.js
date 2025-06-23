@@ -14,7 +14,11 @@ app.get('/info', async (req, res) => {
   if (!url) return res.status(400).send({ error: 'Missing url query param' });
 
   try {
-    const info = await ytdlp(url, { dumpSingleJson: true });
+    const info = await ytdlp(url, {
+      dumpSingleJson: true,
+      exec: './yt-dlp'
+    });
+
     const filteredFormats = info.formats.filter(f =>
       f.acodec !== 'none'
     );
@@ -49,7 +53,10 @@ app.get("/instainfo", async (req, res) => {
   if (!url) return res.status(400).json({ error: "Missing Instagram URL" });
 
   try {
-    const info = await ytdlp(url, { dumpSingleJson: true });
+    const info = await ytdlp(url, {
+      dumpSingleJson: true,
+      exec: './yt-dlp' // ✅ use local yt-dlp binary
+    });
 
     const formatsWithAudio = info.formats.filter(
       f => f.acodec !== "none" && f.vcodec !== "none"
